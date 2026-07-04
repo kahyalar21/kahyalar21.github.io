@@ -1,0 +1,2 @@
+(function(){function g(id){return document.getElementById(id)}var b=g('bm');if(!b)return;try{var q=location.search;var u='';if(q.indexOf('u=')>=0){u=decodeURIComponent(q.split('u=')[1].split('&')[0].replace(/\+/g,' '));if(u){var old=localStorage.getItem('lite_bm')||'';localStorage.setItem('lite_bm',old+'\n'+u)}}var s=localStorage.getItem('lite_bm')||'';var a=s.split('\n');var h='<h2>Yerel liste</h2><ul>';for(var i=0;i<a.length;i++){if(a[i])h+='<li>'+a[i].replace(/</g,'&lt;')+'</li>'}h+='</ul>';b.innerHTML=h}catch(e){}}
+)();
