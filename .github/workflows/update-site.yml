@@ -9,24 +9,17 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
       - name: Generate static pages
-        run: python scripts/update.py
+        run: python3 scripts/update.py
 
       - name: Commit generated files to GitHub
         run: |
@@ -36,18 +29,31 @@ jobs:
           git diff --cached --quiet || git commit -m "Fortnightly portal update"
           git push
 
+      - name: Install FTP client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
       - name: Upload HTTP mirror by FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          local-dir: ./
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.github/**
-            scripts/**
-            data/**
-            AUTOMATION.md
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+        run: |
+          lftp -c "
+          set ftp:ssl-allow no;
+          set ftp:passive-mode yes;
+          set net:timeout 30;
+          set net:max-retries 3;
+          open -u \"$FTP_USERNAME\",\"$FTP_PASSWORD\" \"$FTP_SERVER\";
+          mirror -R --delete --verbose \
+            --exclude-glob .git/** \
+            --exclude-glob .git* \
+            --exclude-glob .github/** \
+            --exclude-glob scripts/** \
+            --exclude-glob data/** \
+            --exclude-glob AUTOMATION.md \
+            ./ \"$FTP_SERVER_DIR\";
+          bye
+          "
