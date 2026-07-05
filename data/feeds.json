@@ -1,0 +1,27 @@
+{
+  "turkiye": [
+    {"name":"TRT Haber", "url":"https://www.trthaber.com/sondakika_articles.rss"},
+    {"name":"Anadolu Ajansı", "url":"https://www.aa.com.tr/tr/rss/default?cat=guncel"}
+  ],
+  "europe": [
+    {"name":"BBC Europe", "url":"https://feeds.bbci.co.uk/news/world/europe/rss.xml"},
+    {"name":"Euronews", "url":"https://www.euronews.com/rss?level=theme&name=news"}
+  ],
+  "world": [
+    {"name":"BBC World", "url":"https://feeds.bbci.co.uk/news/world/rss.xml"}
+  ],
+  "science": [
+    {"name":"NASA Breaking News", "url":"https://www.nasa.gov/rss/dyn/breaking_news.rss"},
+    {"name":"ScienceDaily", "url":"https://www.sciencedaily.com/rss/top/science.xml"}
+  ],
+  "technology": [
+    {"name":"BBC Technology", "url":"https://feeds.bbci.co.uk/news/technology/rss.xml"},
+    {"name":"The Register", "url":"https://www.theregister.com/headlines.atom"}
+  ],
+  "economy": [
+    {"name":"BBC Business", "url":"https://feeds.bbci.co.uk/news/business/rss.xml"}
+  ],
+  "sports": [
+    {"name":"BBC Sport Football", "url":"https://feeds.bbci.co.uk/sport/football/rss.xml"}
+  ]
+}

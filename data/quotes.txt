@@ -1,0 +1,4 @@
+Bilgi, paylaşıldıkça çoğalır.
+Sadelik, nihai karmaşıklıktır.
+Az şeyle çok iş yapmak iyi tasarımın özüdür.
+En sağlam sistem, bozulduğunda da okunabilen sistemdir.

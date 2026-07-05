@@ -1,0 +1,16 @@
+[
+  {"station":"TRT Radyo 1", "morning":"Haber ve güncel", "day":"Kültür, sağlık, toplum", "evening":"Haber, söyleşi"},
+  {"station":"TRT FM", "morning":"Müzik ve kısa haber", "day":"Türkçe pop", "evening":"Liste ve konuk"},
+  {"station":"Açık Radyo", "morning":"Güncel ve ekoloji", "day":"Söyleşi ve müzik", "evening":"Kültür programları"},
+  {"station":"Power FM", "morning":"Morning show", "day":"Hit music", "evening":"Mix / DJ"},
+  {"station":"Power Türk", "morning":"Türkçe pop", "day":"İstekler", "evening":"Liste"},
+  {"station":"Kral FM", "morning":"Türkçe müzik", "day":"İstek hattı", "evening":"Arabesk/fantezi"},
+  {"station":"Metro FM", "morning":"Morning show", "day":"Pop hits", "evening":"Mix"},
+  {"station":"Radyo D", "morning":"Sabah programı", "day":"Pop müzik", "evening":"Akşam kuşağı"},
+  {"station":"NTV Radyo", "morning":"Haber", "day":"Ekonomi ve gündem", "evening":"Günün özeti"},
+  {"station":"Alem FM", "morning":"Eğlence", "day":"Müzik", "evening":"Program"},
+  {"station":"Best FM", "morning":"Sabah programı", "day":"Türkçe müzik", "evening":"Sohbet"},
+  {"station":"Joy FM", "morning":"Soft music", "day":"Adult contemporary", "evening":"Slow"},
+  {"station":"Virgin Radio Türkiye", "morning":"Pop/rock", "day":"Müzik", "evening":"Seçki"},
+  {"station":"Süper FM", "morning":"Türkçe pop", "day":"Liste", "evening":"Müzik"}
+]
