@@ -1,9 +1,9 @@
-name: Update static portal
+name: Update static portal and HTTP mirror
 
 on:
   schedule:
-    # Her ay 1 ve 16. gün UTC 03:10'da çalışır; Türkiye saatiyle yaklaşık 06:10.
-    # Bu pratikte yaklaşık 15 günde bir güncelleme demektir.
+    # Her ay 1 ve 16. gün UTC 03:10'da çalışır.
+    # Türkiye saatiyle yaklaşık 06:10.
     - cron: "10 3 1,16 * *"
   workflow_dispatch:
 
@@ -13,21 +13,41 @@ permissions:
   id-token: write
 
 jobs:
-  update:
+  update-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+
       - name: Generate static pages
         run: python scripts/update.py
-      - name: Commit generated files
+
+      - name: Commit generated files to GitHub
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
           git diff --cached --quiet || git commit -m "Fortnightly portal update"
           git push
+
+      - name: Upload HTTP mirror by FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          local-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            scripts/**
+            data/**
+            AUTOMATION.md
