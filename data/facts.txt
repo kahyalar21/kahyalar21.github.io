@@ -1,0 +1,4 @@
+İstanbul iki kıtaya yayılan az sayıdaki büyük metropolden biridir.
+Düz metin dosyaları, çok eski cihazlarda bile okunabildiği için uzun ömürlüdür.
+Opera Mini eski sürümlerinde sayfalar sunucuda sıkıştırılarak telefona gönderilirdi.
+Teletext sayfaları düşük bant genişliğinde hızlı bilgi iletmek için tasarlanmıştı.
