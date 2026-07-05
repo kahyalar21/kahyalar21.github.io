@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Generate static pages
         run: python3 scripts/update.py
@@ -29,10 +29,45 @@ jobs:
           git diff --cached --quiet || git commit -m "Fortnightly portal update"
           git push
 
+      - name: Prepare public upload folder
+        run: |
+          rm -rf public_upload
+          mkdir public_upload
+
+          cp -r *.html public_upload/ 2>/dev/null || true
+          cp -r *.css public_upload/ 2>/dev/null || true
+          cp -r *.js public_upload/ 2>/dev/null || true
+          cp -r *.txt public_upload/ 2>/dev/null || true
+          cp -r *.xml public_upload/ 2>/dev/null || true
+
+          cp -r archive public_upload/ 2>/dev/null || true
+          cp -r articles public_upload/ 2>/dev/null || true
+          cp -r books public_upload/ 2>/dev/null || true
+          cp -r puzzles public_upload/ 2>/dev/null || true
+          cp -r radio public_upload/ 2>/dev/null || true
+          cp -r readings public_upload/ 2>/dev/null || true
+
+          echo "Prepared files:"
+          find public_upload -type f | sort
+
       - name: Install FTP client
         run: |
           sudo apt-get update
           sudo apt-get install -y lftp
+
+      - name: Check FTP secrets
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+        run: |
+          if [ -z "$FTP_SERVER" ]; then echo "FTP_SERVER is missing"; exit 1; fi
+          if [ -z "$FTP_USERNAME" ]; then echo "FTP_USERNAME is missing"; exit 1; fi
+          if [ -z "$FTP_PASSWORD" ]; then echo "FTP_PASSWORD is missing"; exit 1; fi
+          if [ -z "$FTP_SERVER_DIR" ]; then echo "FTP_SERVER_DIR is missing"; exit 1; fi
+          echo "FTP secrets exist."
+          echo "FTP_SERVER_DIR=$FTP_SERVER_DIR"
 
       - name: Upload HTTP mirror by FTP
         env:
@@ -41,19 +76,14 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
         run: |
-          lftp -c "
+          lftp -d -c "
           set ftp:ssl-allow no;
           set ftp:passive-mode yes;
           set net:timeout 30;
           set net:max-retries 3;
+          set net:reconnect-interval-base 5;
           open -u \"$FTP_USERNAME\",\"$FTP_PASSWORD\" \"$FTP_SERVER\";
-          mirror -R --delete --verbose \
-            --exclude-glob .git/** \
-            --exclude-glob .git* \
-            --exclude-glob .github/** \
-            --exclude-glob scripts/** \
-            --exclude-glob data/** \
-            --exclude-glob AUTOMATION.md \
-            ./ \"$FTP_SERVER_DIR\";
+          cd \"$FTP_SERVER_DIR\";
+          mirror -R --verbose public_upload/ .;
           bye
           "
