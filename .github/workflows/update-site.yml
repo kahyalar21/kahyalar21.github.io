@@ -1,0 +1,33 @@
+name: Update static portal
+
+on:
+  schedule:
+    # Her ay 1 ve 16. gün UTC 03:10'da çalışır; Türkiye saatiyle yaklaşık 06:10.
+    # Bu pratikte yaklaşık 15 günde bir güncelleme demektir.
+    - cron: "10 3 1,16 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Generate static pages
+        run: python scripts/update.py
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Fortnightly portal update"
+          git push
