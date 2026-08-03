@@ -5,88 +5,190 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Günlük Portal | 03.08.2026</title>
     <style>
-        body { font-family: monospace, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 15px; line-height: 1.5; }
-        a { color: #4da6ff; text-decoration: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; background: #121212; color: #e0e0e0; margin: 0; padding: 20px; line-height: 1.6; }
+        a { color: #64b5f6; text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-        .card { background: #1e1e1e; border: 1px solid #333; padding: 15px; border-radius: 4px; }
-        h2 { margin-top: 0; color: #ff9800; font-size: 1.2em; border-bottom: 1px dashed #444; padding-bottom: 5px; }
-        ul { padding-left: 20px; margin: 5px 0; }
+        .header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .header h1 { margin: 0; font-size: 1.6em; color: #fff; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 18px; }
+        .card-full { grid-column: 1 / -1; }
+        h2 { margin-top: 0; color: #ffb74d; font-size: 1.15em; border-bottom: 1px solid #333; padding-bottom: 8px; font-weight: 600; }
+        ul { padding-left: 18px; margin: 8px 0; }
         li { margin-bottom: 8px; }
-        button { background: #ff9800; color: #000; border: none; padding: 6px 12px; cursor: pointer; font-weight: bold; border-radius: 3px; }
-        input[type="text"] { padding: 6px; background: #222; color: #fff; border: 1px solid #444; width: 60%; }
+        .badge { background: #333; color: #ffb74d; padding: 2px 6px; border-radius: 3px; font-size: 0.8em; margin-right: 6px; }
+        button { background: #ffb74d; color: #121212; border: none; padding: 6px 12px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        input[type="text"], textarea { background: #2a2a2a; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; width: 100%; box-sizing: border-box; }
+        .poem-box { background: #181818; padding: 12px; border-left: 3px solid #ffb74d; white-space: pre-line; font-style: italic; }
     </style>
 </head>
 <body>
+
     <div class="header">
-        <h1>🇹🇷 Günlük Metin Portalı</h1>
-        <p>Son Otomatik Güncelleme: <strong>03.08.2026 - 20:08</strong></p>
+        <div>
+            <h1>🇹🇷 Türkiye Günlük Metin Portalı</h1>
+            <small style="color: #888;">Otomatik Güncelleme: 03.08.2026 - 20:18 (TSİ)</small>
+        </div>
+        <div>
+            <button onclick="toggleTheme()">🌓 Tema</button>
+        </div>
     </div>
 
     <div class="grid">
+
+        <!-- 1. PİYASALAR VE EKONOMİ -->
         <div class="card">
-            <h2>📊 Piyasalar (TCMB)</h2>
-            <p><strong>USD/TRY:</strong> --- ₺</p>
-            <p><strong>EUR/TRY:</strong> --- ₺</p>
-            <p><strong>GBP/TRY:</strong> --- ₺</p>
+            <h2>📊 Finans & Kurlar (TCMB)</h2>
+            <p><span class="badge">USD</span> --- ₺</p>
+            <p><span class="badge">EUR</span> --- ₺</p>
+            <p><span class="badge">GBP</span> --- ₺</p>
+            <p><span class="badge">CHF</span> --- ₺</p>
         </div>
 
+        <!-- 2. GÜNÜN KELİME OYUNU -->
         <div class="card">
-            <h2>🎯 Günün Kelime Oyunu (5 Harf)</h2>
-            <p>İpucu: <em>Bir işin, bir oluşun içinde geçtiği süre</em></p>
-            <input type="text" id="guessInput" maxlength="5" placeholder="Tahmininiz...">
-            <button onclick="checkGuess()">Tahmin Et</button>
-            <p id="gameResult"></p>
+            <h2>🎯 Günün Kelime Oyunu (Wordle)</h2>
+            <p>İpucu: <em>Büyük su kütlesi</em></p>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="guessInput" maxlength="5" placeholder="5 Harfli Kelime">
+                <button onclick="checkGuess()">Dene</button>
+            </div>
+            <p id="gameResult" style="margin-top:10px; font-weight:bold;"></p>
         </div>
 
+        <!-- 3. KİŞİSEL NOTLAR & TO-DO -->
         <div class="card">
-            <h2>⏱️ Pomodoro Odaklanma Sayacı</h2>
-            <p id="timerDisplay" style="font-size: 1.5em; font-weight: bold;">25:00</p>
+            <h2>📝 Günlük Not Defterim (Yerel)</h2>
+            <textarea id="userNotes" rows="3" placeholder="Notlarınızı buraya yazın (Otomatik saklanır)..."></textarea>
+            <button onclick="saveNotes()" style="margin-top:6px;">Kaydet</button>
+        </div>
+
+        <!-- 4. TÜRKİYE GÜNDEM HABERLERİ -->
+        <div class="card">
+            <h2>🇹🇷 Türkiye Gündemi</h2>
+            <ul>
+                <li><a href="https://www.trthaber.com/haber/dunya/rusya-ukraynanin-askeri-yuk-tasiyan-gemilerine-saldiri-duzenledik-952973.html" target="_blank">Rusya: Ukrayna'nın askeri yük taşıyan gemilerine saldırı düzenledik</a></li>
+                <li><a href="https://www.trthaber.com/haber/gundem/bakan-ciftci-aziz-milletimizin-tercihine-yoneltilmis-acik-bir-saygisizliktir-952972.html" target="_blank">Bakan Çiftçi: Aziz milletimizin tercihine yöneltilmiş açık bir saygısızlıktır</a></li>
+                <li><a href="https://www.trthaber.com/haber/turkiye/buyukcekmecede-toprak-kaymasi-meydana-geldi-952971.html" target="_blank">Büyükçekmece'de toprak kayması meydana geldi</a></li>
+                <li><a href="https://www.trthaber.com/haber/gundem/sehit-aileleri-ve-gazilerin-haklarina-yonelik-duzenleme-iceren-kanun-teklifi-tbmmye-sunuldu-952970.html" target="_blank">Şehit aileleri ve gazilerin haklarına yönelik düzenleme içeren kanun teklifi TBMM'ye sunuldu</a></li>
+                <li><a href="https://www.trthaber.com/haber/dunya/trumptan-hurmuz-bogazi-tamamen-bizim-kontrolumuzde-mesaji-952969.html" target="_blank">Trump'tan Hürmüz Boğazı tamamen bizim kontrolümüzde mesajı</a></li>
+            </ul>
+        </div>
+
+        <!-- 5. DÜNYA & DİŞ HABERLER -->
+        <div class="card">
+            <h2>🌍 Dünya & Avrupa</h2>
+            <ul>
+                <li><a href="https://www.bbc.com/turkce/articles/c74gj9em7llo?at_medium=RSS&at_campaign=rss" target="_blank">Çerçeve yasa teklifi Meclis'te AKP'li milletvekillerinin imzasına açıldı</a></li>
+                <li><a href="https://www.bbc.com/turkce/articles/c0ejzvd2gzvo?at_medium=RSS&at_campaign=rss" target="_blank">Öcalan: 'Cumhuriyet'in kuruluşu kadar önemli bir demokratikleşme sürecinin başlangıcındayız'</a></li>
+                <li><a href="https://www.bbc.com/turkce/articles/cjwx3ngn3z4o?at_medium=RSS&at_campaign=rss" target="_blank">15 Temmuz paylaşımı nedeniyle tutuklanan Nasuh Mahruki'ye hapis istemi</a></li>
+                <li><a href="https://www.bbc.com/turkce/articles/c23573e8y7mo?at_medium=RSS&at_campaign=rss" target="_blank">Bağırsakları dışarıda olan bebek anne karnında ameliyatla tedavi edildi</a></li>
+                <li><a href="https://www.bbc.com/turkce/articles/cly899d2l8vo?at_medium=RSS&at_campaign=rss" target="_blank">Beşiktaş'ın Avrupa Ligi play-off turunda muhtemel rakipleri belli oldu</a></li>
+            </ul>
+        </div>
+
+        <!-- 6. BİLİM VE TEKNOLOJİ -->
+        <div class="card">
+            <h2>💻 Bilim & Teknoloji</h2>
+            <ul>
+                <li><a href="https://www.webtekno.com/ea-sports-fc-27-transfer-pazari-kariyer-yenilikler-h221554.html" target="_blank">EA SPORTS FC 27 Kariyer Modu yenilendi! Transfer Pazarı, Dinamik GEN ve yeni özellikler açıklandı</a></li>
+                <li><a href="https://www.webtekno.com/google-pixel-11-pro-fold-tasarimi-ozellikleri-h221551.html" target="_blank">Google Pixel 11 Pro Fold Tasarımı ve Özellikleri</a></li>
+                <li><a href="https://www.webtekno.com/samsung-galaxy-s27-pro-kamera-detaylari-h221545.html" target="_blank">Samsung Galaxy S27 Pro’nun Kamera Detayları Sızdırıldı</a></li>
+                <li><a href="https://www.webtekno.com/apple-akilli-gozluk-saglik-cihazina-donusecek-h221548.html" target="_blank">Apple'ın Akıllı Gözlükleri, Bir Sağlık Cihazı da Olacak</a></li>
+                <li><a href="https://www.webtekno.com/honor-play-11-pro-tanitildi-h221539.html" target="_blank">HONOR Play 11 Pro Tanıtıldı</a></li>
+            </ul>
+        </div>
+
+        <!-- 7. KÜLTÜR & GÜNÜN KELİMELERİ -->
+        <div class="card">
+            <h2>📚 Günün Sözcükleri & Dil</h2>
+            <p><strong>Türkçe:</strong> <span class="badge">Sükûnet</span> Durgunluk, dinginlik, huzur hali.</p>
+            <p><strong>İngilizce:</strong> <span class="badge">Ethereal</span> Ruhani, son derece narin ve güzel.</p>
+            <p><strong>Latince Deyim:</strong> <span class="badge">Per Aspera Ad Astra</span> Zorluklardan yıldızlara.</p>
+        </div>
+
+        <!-- 8. GÜNÜN ŞİİRİ -->
+        <div class="card">
+            <h2>🎭 Günün Şiiri</h2>
+            <p><strong>Anlatamıyorum</strong> - <em>Orhan Veli Kanık</em></p>
+            <div class="poem-box">Ağlasam sesimi duyar mısınız,
+Mısralarımda;
+Dokunabilir misiniz,
+Gözyaşlarıma, ellerinizle?</div>
+        </div>
+
+        <!-- 9. ÖZLÜ SÖZ VE DÜŞÜNCE -->
+        <div class="card">
+            <h2>💡 Günün Düşüncesi</h2>
+            <blockquote style="margin:0; font-style:italic;">"Bilgi özgürleştirir, disiplin menzile ulaştırır."</blockquote>
+            <p style="text-align:right; margin-top:5px;">— <strong>Felsefe Deyişi</strong></p>
+        </div>
+
+        <!-- 10. SON DEPREMLER -->
+        <div class="card card-full">
+            <h2>⚠️ Son Depremler (Kandilli Rasathanesi)</h2>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+                <div style="background:#252525; padding:8px; border-radius:4px;"><span class="badge" style="background:#d32f2f; color:#fff;">M 2.4</span> <strong>GUMUSDOVEN-ELBISTAN (KAHRAMANMARAS)</strong><br><small style="color:#aaa;"> - Derinlik: 7.6 km</small></div>
+                <div style="background:#252525; padding:8px; border-radius:4px;"><span class="badge" style="background:#d32f2f; color:#fff;">M 1.8</span> <strong>MIDILLI ADASI (EGE DENIZI)</strong><br><small style="color:#aaa;"> - Derinlik: 13.6 km</small></div>
+                <div style="background:#252525; padding:8px; border-radius:4px;"><span class="badge" style="background:#d32f2f; color:#fff;">M 1.5</span> <strong>AKTAS-SINDIRGI (BALIKESIR)</strong><br><small style="color:#aaa;"> - Derinlik: 9 km</small></div>
+                <div style="background:#252525; padding:8px; border-radius:4px;"><span class="badge" style="background:#d32f2f; color:#fff;">M 2.4</span> <strong>YUNANISTAN</strong><br><small style="color:#aaa;"> - Derinlik: 5 km</small></div>
+                <div style="background:#252525; padding:8px; border-radius:4px;"><span class="badge" style="background:#d32f2f; color:#fff;">M 1.2</span> <strong>SARIGUL-(ELAZIG)</strong><br><small style="color:#aaa;"> - Derinlik: 16.6 km</small></div>
+                <div style="background:#252525; padding:8px; border-radius:4px;"><span class="badge" style="background:#d32f2f; color:#fff;">M 2</span> <strong>KURTULUS-(BINGOL)</strong><br><small style="color:#aaa;"> - Derinlik: 4.7 km</small></div>
+            </div>
+        </div>
+
+        <!-- 11. POMODORO SAYAÇ & RADYO -->
+        <div class="card">
+            <h2>⏱️ Odaklanma Zamanlayıcısı</h2>
+            <p id="timerDisplay" style="font-size:1.6em; font-weight:bold; margin:5px 0;">25:00</p>
             <button onclick="startTimer()">Başlat</button>
             <button onclick="resetTimer()">Sıfırla</button>
         </div>
 
-        <div class="card" style="grid-column: 1 / -1;">
-            <h2>📰 Canlı Son Dakika Haber Başlıkları</h2>
-            <ul>
-                <li>[TRT Haber] <a href="https://www.trthaber.com/haber/gundem/bakan-ciftci-aziz-milletimizin-tercihine-yoneltilmis-acik-bir-saygisizliktir-952972.html" target="_blank">Bakan Çiftçi: Aziz milletimizin tercihine yöneltilmiş açık bir saygısızlıktır</a></li>
-                <li>[TRT Haber] <a href="https://www.trthaber.com/haber/turkiye/buyukcekmecede-toprak-kaymasi-meydana-geldi-952971.html" target="_blank">Büyükçekmece'de toprak kayması meydana geldi</a></li>
-                <li>[TRT Haber] <a href="https://www.trthaber.com/haber/gundem/sehit-aileleri-ve-gazilerin-haklarina-yonelik-duzenleme-iceren-kanun-teklifi-tbmmye-sunuldu-952970.html" target="_blank">Şehit aileleri ve gazilerin haklarına yönelik düzenleme içeren kanun teklifi TBMM'ye sunuldu</a></li>
-                <li>[TRT Haber] <a href="https://www.trthaber.com/haber/dunya/trumptan-hurmuz-bogazi-tamamen-bizim-kontrolumuzde-mesaji-952969.html" target="_blank">Trump'tan Hürmüz Boğazı tamamen bizim kontrolümüzde mesajı</a></li>
-                <li>[TRT Haber] <a href="https://www.trthaber.com/haber/gundem/bakan-fidan-ingiliz-mevkidasi-miliband-ile-gorustu-952968.html" target="_blank">Bakan Fidan, İngiliz mevkidaşı Miliband ile görüştü</a></li>
-                <li>[BBC Türkçe] <a href="https://www.bbc.com/turkce/articles/c74gj9em7llo?at_medium=RSS&at_campaign=rss" target="_blank">Çerçeve yasa teklifi Meclis'te AKP'li milletvekillerinin imzasına açıldı</a></li>
-                <li>[BBC Türkçe] <a href="https://www.bbc.com/turkce/articles/c0ejzvd2gzvo?at_medium=RSS&at_campaign=rss" target="_blank">Öcalan: 'Cumhuriyet'in kuruluşu kadar önemli bir demokratikleşme sürecinin başlangıcındayız'</a></li>
-                <li>[BBC Türkçe] <a href="https://www.bbc.com/turkce/articles/cjwx3ngn3z4o?at_medium=RSS&at_campaign=rss" target="_blank">15 Temmuz paylaşımı nedeniyle tutuklanan Nasuh Mahruki'ye hapis istemi</a></li>
-                <li>[BBC Türkçe] <a href="https://www.bbc.com/turkce/articles/c23573e8y7mo?at_medium=RSS&at_campaign=rss" target="_blank">Bağırsakları dışarıda olan bebek anne karnında ameliyatla tedavi edildi</a></li>
-                <li>[BBC Türkçe] <a href="https://www.bbc.com/turkce/articles/cly899d2l8vo?at_medium=RSS&at_campaign=rss" target="_blank">Beşiktaş'ın Avrupa Ligi play-off turunda muhtemel rakipleri belli oldu</a></li>
-            </ul>
+        <div class="card">
+            <h2>📻 Canlı Metin Radyoları</h2>
+            <p>TRT Radyo 1, TRT FM ve haber yayınları için tıklayın:</p>
+            <p><a href="https://www.trtdinle.com/" target="_blank">▶️ TRT Canlı Radyo Yayınını Aç</a></p>
         </div>
+
     </div>
 
     <script>
-        const targetWord = 'ZAMAN';
+        // Kelime Oyunu
+        const targetWord = 'DENİZ';
         function checkGuess() {
             const input = document.getElementById('guessInput').value.toUpperCase();
             const res = document.getElementById('gameResult');
             if(input.length !== 5) { res.innerText = 'Lütfen 5 harfli kelime girin.'; return; }
-            if(input === targetWord) { res.innerText = '🎉 Tebrikler! Doğru Bildiniz!'; }
-            else { res.innerText = '❌ Yanlış tahmin, tekrar deneyin!'; }
+            if(input === targetWord) { res.innerText = '🎉 Tebrikler! Doğru bildiniz.'; }
+            else { res.innerText = '❌ Yanlış tahmin, tekrar deneyin.'; }
         }
 
-        let timer;
-        let seconds = 1500;
+        // Not Saklama
+        document.getElementById('userNotes').value = localStorage.getItem('portal_notes') || '';
+        function saveNotes() {
+            localStorage.setItem('portal_notes', document.getElementById('userNotes').value);
+            alert('Notlarınız tarayıcınıza kaydedildi.');
+        }
+
+        // Pomodoro
+        let timer, seconds = 1500;
         function startTimer() {
             clearInterval(timer);
             timer = setInterval(() => {
                 if(seconds <= 0) { clearInterval(timer); alert('Süre doldu!'); return; }
                 seconds--;
-                let m = Math.floor(seconds / 60);
-                let s = seconds % 60;
+                let m = Math.floor(seconds / 60), s = seconds % 60;
                 document.getElementById('timerDisplay').innerText = (m<10?'0':'')+m + ':' + (s<10?'0':'')+s;
             }, 1000);
         }
         function resetTimer() { clearInterval(timer); seconds = 1500; document.getElementById('timerDisplay').innerText = '25:00'; }
+
+        // Tema Geçişi
+        function toggleTheme() {
+            document.body.style.background = document.body.style.background === 'rgb(245, 245, 245)' ? '#121212' : '#f5f5f5';
+            document.body.style.color = document.body.style.color === 'rgb(18, 18, 18)' ? '#e0e0e0' : '#121212';
+        }
     </script>
 </body>
 </html>
